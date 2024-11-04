@@ -21,7 +21,7 @@ jobs:
           # Extract release version, ticket number, and description if they exist
           release=$(echo "$commit_message" | grep -oP 'tc-\d+\.\d+\.\d+' || echo "")
           ticket=$(echo "$commit_message" | grep -oP 'TC-\d+' || echo "")
-          description=$(echo "$commit_message" | sed -E 's/^.*VU-\d+ //' || echo "")
+          description=$(echo "$commit_message" | sed -E 's/^.*TC-\d+ //' || echo "")
 
           # Log extracted values for debugging
           echo "Extracted release: $release"
