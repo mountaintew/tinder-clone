@@ -7,7 +7,7 @@ function Header() {
     return (
         <div className="header">
             <IconButton>
-                <PersonRoundedIcon fontSize="large" className="header-icon" />tes
+                <PersonRoundedIcon fontSize="large" className="header-icon" />
             </IconButton>
             <img alt="Tinder Logo" src="icon.png" className="headerLogo" />
             <IconButton>
