@@ -34,7 +34,6 @@ jobs:
           echo "::set-output name=description::$description"
 
       - name: Post comment on PR
-        if: ${{ steps.get_commit.outputs.release != '' && steps.get_commit.outputs.ticket != '' }}
         uses: actions/github-script@v6
         with:
           script: |
