@@ -6,9 +6,6 @@ import { IconButton } from '@material-ui/core';
 function Header() {
     return (
         <div className="header">
-            <IconButton>
-                <PersonRoundedIcon fontSize="large" className="header-icon" />tes
-            </IconButton>
             <img alt="Tinder Logo" src="icon.png" className="headerLogo" />
             <IconButton>
                 <ForumRoundedIcon fontSize="large" className="header-icon" />
