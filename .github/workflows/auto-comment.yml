@@ -22,6 +22,11 @@ jobs:
           release=$(echo "$commit_message" | grep -oP 'vu-\d+\.\d+\.\d+' || echo "")
           ticket=$(echo "$commit_message" | grep -oP 'VU-\d+' || echo "")
           description=$(echo "$commit_message" | sed -E 's/^.*VU-\d+ //' || echo "")
+
+          # Log extracted values for debugging
+          echo "Extracted release: $release"
+          echo "Extracted ticket: $ticket"
+          echo "Extracted description: $description"
           
           # Export these for use in the next steps
           echo "::set-output name=release::$release"
@@ -29,7 +34,7 @@ jobs:
           echo "::set-output name=description::$description"
 
       - name: Post comment on PR
-        if: steps.get_commit.outputs.release != '' && steps.get_commit.outputs.ticket != ''
+        if: ${{ steps.get_commit.outputs.release != '' && steps.get_commit.outputs.ticket != '' }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -37,7 +42,7 @@ jobs:
             const ticket = '${{ steps.get_commit.outputs.ticket }}';
             const description = '${{ steps.get_commit.outputs.description }}';
 
-            const commentBody = `## Project release\nrelease: ${release}`.trim();
+            const commentBody = `## Project Release\nrelease: ${release}`
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
