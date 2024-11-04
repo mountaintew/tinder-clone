@@ -36,7 +36,6 @@ jobs:
             const ticket = '${{ steps.get_commit.outputs.ticket }}';
             const description = '${{ steps.get_commit.outputs.description }}';
 
-            // Construct comment
             const commentBody = `
 ## Project release
 release: ${release}
@@ -47,9 +46,8 @@ release: ${release}
 
 ## Issue ticket number and link
 - [${ticket}](https://qualitytrade.atlassian.net/browse/${ticket})
-            `;
+            `.trim();
 
-            // Post comment to PR
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
