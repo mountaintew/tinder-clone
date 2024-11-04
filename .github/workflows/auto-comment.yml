@@ -36,17 +36,7 @@ jobs:
             const ticket = '${{ steps.get_commit.outputs.ticket }}';
             const description = '${{ steps.get_commit.outputs.description }}';
 
-            const commentBody = `
-## Project release
-release: ${release}
-
-## Description
-- [Category]
- - ${description}
-
-## Issue ticket number and link
-- [${ticket}](https://qualitytrade.atlassian.net/browse/${ticket})
-            `.trim();
+            const commentBody = `## Project Release\nrelease: ${release}`.trim();
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
