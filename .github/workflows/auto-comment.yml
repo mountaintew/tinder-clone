@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Get commit message
         id: get_commit
         run: |
@@ -18,17 +18,18 @@ jobs:
           commit_message=$(git log -1 --pretty=%B)
           echo "Commit message: $commit_message"
           
-          # Extract release version, ticket number, and description
-          release=$(echo "$commit_message" | grep -oP 'vu-\d+\.\d+\.\d+')
-          ticket=$(echo "$commit_message" | grep -oP 'VU-\d+')
-          description=$(echo "$commit_message" | sed -E 's/^.*VU-\d+ //')
-
+          # Extract release version, ticket number, and description if they exist
+          release=$(echo "$commit_message" | grep -oP 'vu-\d+\.\d+\.\d+' || echo "")
+          ticket=$(echo "$commit_message" | grep -oP 'VU-\d+' || echo "")
+          description=$(echo "$commit_message" | sed -E 's/^.*VU-\d+ //' || echo "")
+          
           # Export these for use in the next steps
           echo "::set-output name=release::$release"
           echo "::set-output name=ticket::$ticket"
           echo "::set-output name=description::$description"
 
       - name: Post comment on PR
+        if: steps.get_commit.outputs.release != '' && steps.get_commit.outputs.ticket != ''
         uses: actions/github-script@v6
         with:
           script: |
@@ -36,7 +37,7 @@ jobs:
             const ticket = '${{ steps.get_commit.outputs.ticket }}';
             const description = '${{ steps.get_commit.outputs.description }}';
 
-            const commentBody = `## Project Release\nrelease: ${release}`.trim();
+            const commentBody = `## Project release\nrelease: ${release}`.trim();
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
